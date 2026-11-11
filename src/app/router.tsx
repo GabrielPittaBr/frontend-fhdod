@@ -11,6 +11,7 @@ const SenhaPage = lazy(() => import('@/features/auth/pages/SenhaPage'))
 const PainelLayout = lazy(() => import('@/components/layout/PainelLayout'))
 const DashboardPage = lazy(() => import('@/features/dashboard/pages/DashboardPage'))
 const RespostasPage = lazy(() => import('@/features/respostas/pages/RespostasPage'))
+const ContatosPage = lazy(() => import('@/features/contatos/pages/ContatosPage'))
 const ExigeSessao = lazy(() => import('./guards').then((m) => ({ default: m.ExigeSessao })))
 const ExigePermissao = lazy(() => import('./guards').then((m) => ({ default: m.ExigePermissao })))
 
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: com(['dashboard:ver'], <DashboardPage />) },
               { path: 'respostas', element: com(['respostas:ver'], <RespostasPage />) },
+              { path: 'contatos', element: com(['contatos:ver'], <ContatosPage />) },
               { path: '*', element: <NaoEncontrada /> },
             ],
           },
