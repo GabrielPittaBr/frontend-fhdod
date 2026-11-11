@@ -1,10 +1,22 @@
-import { lazy } from 'react'
+import { lazy, type ReactNode } from 'react'
 import { createBrowserRouter, Navigate } from 'react-router'
+import type { Permissao } from '@/lib/api/tipos'
 import { ErroInesperado, NaoEncontrada, Raiz } from './Raiz'
 
 // Uma área por arquivo baixado: quem abre a pesquisa pelo QR Code não baixa nada do painel.
 const PesquisaPage = lazy(() => import('@/features/pesquisa/pages/PesquisaPage'))
 const TotemPage = lazy(() => import('@/features/pesquisa/pages/TotemPage'))
+const LoginPage = lazy(() => import('@/features/auth/pages/LoginPage'))
+const SenhaPage = lazy(() => import('@/features/auth/pages/SenhaPage'))
+const PainelLayout = lazy(() => import('@/components/layout/PainelLayout'))
+const DashboardPage = lazy(() => import('@/features/dashboard/pages/DashboardPage'))
+const RespostasPage = lazy(() => import('@/features/respostas/pages/RespostasPage'))
+const ContatosPage = lazy(() => import('@/features/contatos/pages/ContatosPage'))
+const ExigeSessao = lazy(() => import('./guards').then((m) => ({ default: m.ExigeSessao })))
+const ExigePermissao = lazy(() => import('./guards').then((m) => ({ default: m.ExigePermissao })))
+
+/** O acesso depende da lista de permissões do /auth/me (basta uma delas), não do nome do perfil. */
+const com = (permissoes: Permissao[], pagina: ReactNode) => <ExigePermissao permissoes={permissoes}>{pagina}</ExigePermissao>
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +26,23 @@ export const router = createBrowserRouter([
       { path: '/', element: <Navigate to="/login" replace /> },
       { path: '/s/:setor', element: <PesquisaPage /> },
       { path: '/totem/:setor', element: <TotemPage /> },
+      { path: '/login', element: <LoginPage /> },
+      {
+        path: '/painel',
+        element: <ExigeSessao />,
+        children: [
+          { path: 'senha', element: <SenhaPage /> },
+          {
+            element: <PainelLayout />,
+            children: [
+              { index: true, element: com(['dashboard:ver'], <DashboardPage />) },
+              { path: 'respostas', element: com(['respostas:ver'], <RespostasPage />) },
+              { path: 'contatos', element: com(['contatos:ver'], <ContatosPage />) },
+              { path: '*', element: <NaoEncontrada /> },
+            ],
+          },
+        ],
+      },
       { path: '*', element: <NaoEncontrada /> },
     ],
   },
