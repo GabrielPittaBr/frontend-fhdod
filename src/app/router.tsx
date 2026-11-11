@@ -14,6 +14,7 @@ const DashboardPage = lazy(() => import('@/features/dashboard/pages/DashboardPag
 const RespostasPage = lazy(() => import('@/features/respostas/pages/RespostasPage'))
 const ContatosPage = lazy(() => import('@/features/contatos/pages/ContatosPage'))
 const SetoresPage = lazy(() => import('@/features/setores/pages/SetoresPage'))
+const PerguntasPage = lazy(() => import('@/features/perguntas/pages/PerguntasPage'))
 const TelasTvPage = lazy(() => import('@/features/tv-wall/pages/TelasTvPage'))
 const ExigeSessao = lazy(() => import('./guards').then((m) => ({ default: m.ExigeSessao })))
 const ExigePermissao = lazy(() => import('./guards').then((m) => ({ default: m.ExigePermissao })))
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
               { path: 'contatos', element: com(['contatos:ver'], <ContatosPage />) },
               // o gestor entra aqui só para chegar às perguntas e ao QR Code dos seus setores
               { path: 'setores', element: com(['setores:gerenciar', 'perguntas:gerenciar'], <SetoresPage />) },
+              { path: 'setores/:id/perguntas', element: com(['perguntas:gerenciar'], <PerguntasPage />) },
               { path: 'tv', element: com(['tvwall:gerenciar'], <TelasTvPage />) },
               { path: '*', element: <NaoEncontrada /> },
             ],
