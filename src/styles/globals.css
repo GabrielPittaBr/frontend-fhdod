@@ -179,3 +179,13 @@
 @utility numeros {
   font-variant-numeric: tabular-nums;
 }
+
+/* TV Wall: barra que mostra quanto falta para a próxima visão. */
+@keyframes tv-progresso {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
