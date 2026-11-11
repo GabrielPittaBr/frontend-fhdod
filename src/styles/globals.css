@@ -1,0 +1,181 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/lexend/wght.css';
+
+@custom-variant dark (&:is(.dark *));
+/* Telas altas (tablet em pé, totem vertical): o conteúdo da pesquisa fica no meio, ao alcance da mão. */
+@custom-variant alta (@media (min-height: 60rem));
+
+@theme inline {
+  --font-sans:
+    'Lexend Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: var(--font-sans);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Cores de avaliação: só na escala de rostinhos e nos indicadores que a repetem. */
+  --color-nota-1: var(--nota-1);
+  --color-nota-2: var(--nota-2);
+  --color-nota-3: var(--nota-3);
+  --color-nota-4: var(--nota-4);
+  --color-nota-5: var(--nota-5);
+
+  /* Avisos usam âmbar, nunca o vermelho da marca. */
+  --color-aviso: var(--aviso);
+  --color-aviso-fundo: var(--aviso-fundo);
+  --color-aviso-borda: var(--aviso-borda);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.35);
+  --radius-2xl: calc(var(--radius) * 1.75);
+  --radius-3xl: calc(var(--radius) * 2.25);
+}
+
+:root {
+  --background: #f3f8f7;
+  --foreground: #12303f;
+  --card: #ffffff;
+  --card-foreground: #12303f;
+  --popover: #ffffff;
+  --popover-foreground: #12303f;
+  --primary: #0a6c6c;
+  --primary-foreground: #ffffff;
+  --secondary: #dceeec;
+  --secondary-foreground: #12303f;
+  --muted: #e8f1f0;
+  --muted-foreground: #47606e;
+  --accent: #dceeec;
+  --accent-foreground: #12303f;
+  --destructive: #a63d00;
+  --border: #d3e2e0;
+  --input: #6f8891;
+  --ring: #0a6c6c;
+  --radius: 0.75rem;
+
+  --nota-1: #d9483b;
+  --nota-2: #e9853a;
+  --nota-3: #e2b32c;
+  --nota-4: #8bbb3c;
+  --nota-5: #2fa05c;
+
+  --aviso: #6e4400;
+  --aviso-fundo: #fff1cc;
+  --aviso-borda: #e5b94e;
+
+  color-scheme: light;
+}
+
+/* Tema escuro: usado só na TV Wall. */
+.dark {
+  --background: #0b2530;
+  --foreground: #eaf4f3;
+  --card: #123844;
+  --card-foreground: #eaf4f3;
+  --popover: #123844;
+  --popover-foreground: #eaf4f3;
+  --primary: #5fd3c6;
+  --primary-foreground: #0b2530;
+  --secondary: #123844;
+  --secondary-foreground: #eaf4f3;
+  --muted: #123844;
+  --muted-foreground: #9db9be;
+  --accent: #123844;
+  --accent-foreground: #eaf4f3;
+  --border: #24505c;
+  --input: #5f858e;
+  --ring: #5fd3c6;
+
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply font-sans;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    min-height: 100dvh;
+  }
+  /* Foco sempre visível, sem transição. */
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+  }
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  label[for],
+  summary {
+    cursor: pointer;
+  }
+  /* sem a espera do duplo toque em botões, links e campos */
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  label,
+  summary {
+    touch-action: manipulation;
+  }
+
+  /* Totem: tudo maior e sem zoom, seleção ou rolagem acidental (só nesta rota). */
+  html.totem {
+    font-size: clamp(18px, 1.2vw + 1.2vh, 28px);
+    touch-action: pan-y;
+    overscroll-behavior: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  html.totem input,
+  html.totem textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  /* TV: a tipografia acompanha o tamanho da tela (Full HD e 4K). */
+  html.tv {
+    font-size: clamp(14px, 0.84vw, 40px);
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility numeros {
+  font-variant-numeric: tabular-nums;
+}
