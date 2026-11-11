@@ -180,6 +180,42 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Folha do QR Code: fica fora da tela e, na impressão, é a única coisa que sai no papel. */
+.folha-qr {
+  display: none;
+}
+@media print {
+  @page {
+    size: A4;
+    margin: 18mm;
+  }
+  body > *:not(.folha-qr) {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  .folha-qr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 9mm;
+    padding-top: 12mm;
+    text-align: center;
+    color: #12303f;
+    font-size: 16pt;
+  }
+  .folha-qr h1 {
+    font-size: 34pt;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .folha-qr small {
+    font-size: 11pt;
+    color: #47606e;
+  }
+}
+
 /* TV Wall: barra que mostra quanto falta para a próxima visão. */
 @keyframes tv-progresso {
   from {
