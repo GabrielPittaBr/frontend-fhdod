@@ -1,5 +1,6 @@
-import { lazy } from 'react'
+import { lazy, type ReactNode } from 'react'
 import { createBrowserRouter, Navigate } from 'react-router'
+import type { Permissao } from '@/lib/api/tipos'
 import { ErroInesperado, NaoEncontrada, Raiz } from './Raiz'
 
 // Uma área por arquivo baixado: quem abre a pesquisa pelo QR Code não baixa nada do painel.
@@ -8,7 +9,12 @@ const TotemPage = lazy(() => import('@/features/pesquisa/pages/TotemPage'))
 const LoginPage = lazy(() => import('@/features/auth/pages/LoginPage'))
 const SenhaPage = lazy(() => import('@/features/auth/pages/SenhaPage'))
 const PainelLayout = lazy(() => import('@/components/layout/PainelLayout'))
+const DashboardPage = lazy(() => import('@/features/dashboard/pages/DashboardPage'))
 const ExigeSessao = lazy(() => import('./guards').then((m) => ({ default: m.ExigeSessao })))
+const ExigePermissao = lazy(() => import('./guards').then((m) => ({ default: m.ExigePermissao })))
+
+/** O acesso depende da lista de permissões do /auth/me (basta uma delas), não do nome do perfil. */
+const com = (permissoes: Permissao[], pagina: ReactNode) => <ExigePermissao permissoes={permissoes}>{pagina}</ExigePermissao>
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +33,7 @@ export const router = createBrowserRouter([
           {
             element: <PainelLayout />,
             children: [
+              { index: true, element: com(['dashboard:ver'], <DashboardPage />) },
               { path: '*', element: <NaoEncontrada /> },
             ],
           },
