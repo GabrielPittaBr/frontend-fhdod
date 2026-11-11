@@ -170,6 +170,22 @@ Mantido, com o motivo:
 - Links diretos (`/s/...`, `/totem/...`, `/tv`, `/painel/...`) abrem depois do build, servidos pelo `vite preview`.
 - Tamanho baixado: quem abre a pesquisa pelo QR Code baixa cerca de 150 kB de JavaScript comprimido, sem nenhum gráfico ou tela do painel.
 
+## Organização do histórico
+
+A pedido da dupla, o trabalho foi separado em branches por assunto e commits no padrão Conventional Commits (tipo em inglês, descrição em português), como no GitHub Flow do Plano de Desenvolvimento. Cada branch parte da anterior, porque cada entrega usa a de antes:
+
+| Branch | O que tem |
+| --- | --- |
+| `chore/fundacao-do-projeto` | Plano, configuração, tema, componentes do shadcn/ui, logo, rostinhos e links diretos |
+| `feat/camada-de-dados` | Tipos do contrato, mocks, testes das regras e chamadas por assunto |
+| `feat/pesquisa-e-totem` | Fluxo da pesquisa, telas do paciente e modo totem |
+| `feat/painel` | Login, dashboard, respostas e pedidos de retorno |
+| `feat/tv-wall` | TV Wall e gestão das telas |
+| `feat/cadastros` | Setores e QR Code, perguntas, categorias e turnos, usuários |
+| `docs/registros-e-readme` | Registros e README |
+
+Todos os commits com código passam no `tsc` e no ESLint sozinhos (conferido um a um numa cópia separada do repositório), e os testes passam na ponta de cada branch que os tem. Nada foi enviado ao GitHub nem juntado à `main`.
+
 ## Pendências e dúvidas
 
 - **Publicar** e o **manual de uso** são entregáveis da atividade, fora deste plano.
